@@ -1,5 +1,5 @@
 /**
- * Copyright 2019 Google LLC
+ * Copyright 2021 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-resource "google_project_iam_member" "project_iam_member" {
-  for_each = toset(var.project_roles)
-  project  = var.project_id
-  role     = each.key
-  member   = "${var.prefix}:${var.service_account_address}"
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+
+    google = {
+      source  = "hashicorp/google"
+      version = ">= 3.53, < 5.0"
+    }
+  }
+
+  provider_meta "google" {
+    module_name = "blueprints/terraform/terraform-google-iam:member_iam/v7.4.0"
+  }
+
 }
